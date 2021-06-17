@@ -7,7 +7,8 @@
 This is a server I built for my City Explorer Application using Node.
 
 ## Getting Started
-<!-- What are the steps that a user must take in order to build this app on their own machine and get it running? -->
+Create .env file.
+Set .env to PORT=3001
 
 ## Architecture
 <!-- Provide a detailed description of the application design. What technologies (languages, libraries, etc) you're using, and any other relevant design information. -->
