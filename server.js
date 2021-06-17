@@ -6,22 +6,25 @@ require('dotenv').config();
 const cors = require('cors');
 app.use(cors());
 
-// const axios = require('axios');
+const axios = require('axios');
 
 const PORT = process.env.PORT || 3001;
 
-const weatherData = require('./data/weather.json');
+
 
 // root route: the one at /
 app.get('/', (req, res) => {
   res.send('server is working!');
 })
 
-app.get('/weather', (req, res) => {
-  // grab the data from the query
+app.get('/weather', getWeather)
+
+  async function getWeather(req, res){
   let lat = req.query.lat;
   let lon = req.query.lon;
   let searchQuery = req.query.searchQuery;
+
+  const weatherURL = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lon}&key=${WEATHER_API_KEY}`;
 
   console.log(lat, lon, searchQuery);
 
@@ -33,7 +36,8 @@ app.get('/weather', (req, res) => {
     let cityDataPrettified = cityWeatherData.data.map(obj => new Forecast(obj.datetime, `Low of ${obj.low_temp}, high of ${obj.max_temp} with ${obj.weather.description.toLowerCase()}`));
     res.send(cityDataPrettified);
   }
-});
+  }
+
 
 class Forecast {
   constructor(date, description) {
