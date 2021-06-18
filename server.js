@@ -1,49 +1,32 @@
+// configuration: imports and middleware
+const axios = require('axios');
+require('dotenv').config();
 const express = require('express');
 const app = express();
-
-require('dotenv').config();
-
+const { response } = require('express');
 const cors = require('cors');
 app.use(cors());
 
-const axios = require('axios');
-
+// Local imports
 const PORT = process.env.PORT || 3001;
+const weatherKey = process.env.WEATHER_API_KEY;
+const movieKey = process.env.MOVIE_API_KEY;
+const getMovies = require(`./routeHandlers/getMovies`);
+const getWeather = require(`./routeHandlers/getWeather`);
+console.log('Hello world at ', PORT);
 
 
+// Opening route
+app.get('/', (req, res) => res.send('server is working!'));
 
-// root route: the one at /
-app.get('/', (req, res) => {
-  res.send('server is working!');
-})
-
+// Route to get weather forecast
 app.get('/weather', getWeather)
 
-  async function getWeather(req, res){
-  let lat = req.query.lat;
-  let lon = req.query.lon;
-  let searchQuery = req.query.searchQuery;
+// Route for getting movies
+app.get('/movies', getMovies)
 
-  const weatherURL = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lon}&key=${WEATHER_API_KEY}`;
+// Basic error message
+app.get('/*', (req, res) => res.status(404).send('This is not a working URL.'));
 
-  console.log(lat, lon, searchQuery);
-
-  let cityWeatherData = weatherData.find(city => city.city_name === searchQuery);
-  console.log(cityWeatherData);
-  if(cityWeatherData === undefined) {
-    res.status(500).send('Unsupported city');
-  } else {
-    let cityDataPrettified = cityWeatherData.data.map(obj => new Forecast(obj.datetime, `Low of ${obj.low_temp}, high of ${obj.max_temp} with ${obj.weather.description.toLowerCase()}`));
-    res.send(cityDataPrettified);
-  }
-  }
-
-
-class Forecast {
-  constructor(date, description) {
-    this.date = date;
-    this.description = description;
-  }
-}
-
+// Port check in
 app.listen(PORT, () => console.log(`listening on port ${PORT}`));
