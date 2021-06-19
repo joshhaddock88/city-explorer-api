@@ -9,8 +9,8 @@ app.use(cors());
 
 // Local imports
 const PORT = process.env.PORT || 3001;
-const weatherKey = process.env.WEATHER_API_KEY;
-const movieKey = process.env.MOVIE_API_KEY;
+// const weatherKey = process.env.WEATHER_API_KEY;
+// const movieKey = process.env.MOVIE_API_KEY;
 const getMovies = require(`./routeHandlers/getMovies`);
 const getWeather = require(`./routeHandlers/getWeather`);
 console.log('Hello world at ', PORT);
