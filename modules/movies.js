@@ -1,5 +1,4 @@
 const axios = require('axios');
-const { response } = require('express');
 const movieKey = process.env.MOVIE_API_KEY;
 // this cashe holds recently made requests
 // keys: movie - city
@@ -21,8 +20,8 @@ class Movies {
   
 getMovies = async (req, res) => {
   const city = req.query.city;
-  const key = `movie - ${city}`;
-  const url = `https://api.themoviedb.org/3/search/movie?api_key=${movieKey}&query=${city}&page=1&include_adult=false`
+  const key = `movies - ${city}`;
+  const url = `https://api.themoviedb.org/3/search/movie?api_key=${movieKey}&query=${city}&page=1&include_adult=false`;
 
     // get movie data matching city name
     if (cache[key] &&
@@ -30,12 +29,14 @@ getMovies = async (req, res) => {
       console.log('Cache hit');
       res.send(cache[key]);
     } else {
+      console.log('Cache miss');
       try {
         const movieList = await axios.get(url);
         const movieArr = movieList.data.results.map(movie => new Movies(movie));
+        console.log(movieArr);
         cache[key] = {};
         cache[key].timestamp = Date.now();
-        cace[key].data = movieArr;
+        cache[key].data = movieArr;
         res.send(movieArr);
         console.log(movieList.data.results);
       } catch {
