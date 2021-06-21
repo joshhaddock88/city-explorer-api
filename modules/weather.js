@@ -1,6 +1,9 @@
 const axios = require('axios');
 const { response } = require('express');
 const weatherKey = process.env.WEATHER_API_KEY;
+// this cache holds recently made requests
+// keys: lat and lon
+//value: object{timestamp, weatherArr}
 let cache = require('./cache.js');
 
 
@@ -11,15 +14,12 @@ class Forecast {
   };
 };
 
-// this cashe holds recently made requests
-// keys: lat and lon
-//value: city weather
+
 
 getWeather = async (req, res) => {
   const lat = req.query.lat;
   const lon = req.query.lon;
   const key = `weather - ${lat}${lon}`
-  console.log(key);
   const url = `https://api.weatherbit.io/v2.0/forecast/daily?key=${weatherKey}&lat=${lat}&lon=${lon}`
 
   console.log(lat, lon);
