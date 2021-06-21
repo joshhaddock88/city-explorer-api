@@ -8,22 +8,22 @@ const cors = require('cors');
 app.use(cors());
 
 // Local imports
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 // const weatherKey = process.env.WEATHER_API_KEY;
 // const movieKey = process.env.MOVIE_API_KEY;
-const getMovies = require(`./routeHandlers/getMovies`);
-const getWeather = require(`./routeHandlers/getWeather`);
-console.log('Hello world at ', PORT);
+const moviesHandler = require(`./modules/movies.js`);
+const weatherHandler = require(`./modules/weather.js`);
+console.log(`Hi there, youre listening at port ${PORT}`);
 
 
 // Opening route
 app.get('/', (req, res) => res.send('server is working!'));
 
 // Route to get weather forecast
-app.get('/weather', getWeather)
+app.get('/weather', weatherHandler)
 
 // Route for getting movies
-app.get('/movies', getMovies)
+app.get('/movies', moviesHandler)
 
 // Basic error message
 app.get('/*', (req, res) => res.status(404).send('This is not a working URL.'));
